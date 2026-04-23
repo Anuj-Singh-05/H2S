@@ -1,4 +1,5 @@
-export const runGeminiMatch = async (need, volunteers, apiKey) => {
+export const runGeminiMatch = async (need, volunteers, uiApiKey) => {
+  const apiKey = uiApiKey || import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error('Gemini API key is required');
   }
@@ -15,9 +16,7 @@ Return a JSON array of the top 3 best volunteer matches, ranked by fit.
 Each item should have: "volunteer_id", "score" (1-10), "reason" (1 concise sentence explaining exactly why they fit the need's skills and location).
 
 Return ONLY valid JSON array. No markdown, no explanation outside the array.`;
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

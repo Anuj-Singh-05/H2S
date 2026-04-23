@@ -85,7 +85,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <h3 className="text-xl font-bold mb-4 font-sans text-gray-900">Settings</h3>
         <label className="block text-sm font-medium text-gray-700 mb-1">Gemini API Key</label>
         <input type="password" value={key} onChange={e => {setKey(e.target.value); localStorage.setItem('gemini_api_key', e.target.value);}} className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-4" placeholder="AIZA..." />
-        <p className="text-xs text-gray-500 mb-4">You need an active Gemini API Key for the AI matching to work.</p>
+        <p className="text-xs text-gray-500 mb-4">You can set your Gemini API Key here, or via the .env file.</p>
         <button onClick={onClose} className="w-full bg-primary-600 text-white py-2 rounded-lg font-medium">Save & Close</button>
       </div>
     </div>
@@ -101,9 +101,9 @@ const MatchModal = ({ need, isOpen, onClose }) => {
   // Start matching process when modal opens
   React.useEffect(() => {
     if (isOpen && need && !matches) {
-      const apiKey = localStorage.getItem('gemini_api_key');
+      const apiKey = localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY;
       if (!apiKey) {
-         setError("Please set your Gemini API Key in the settings first.");
+         setError("Please set your Gemini API Key in the settings or .env file first.");
          return;
       }
       setLoading(true);
